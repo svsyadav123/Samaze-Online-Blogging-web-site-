@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f8fa;
+}
+
+.bookmark-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    border-bottom: 1px solid #e6ecf0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #0f1419;
+}
+
+.page-header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #657786;
+}
+
+.post-card {
+    background: #ffffff;
+    border: 1px solid #e6ecf0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: 0.2s ease;
+}
+
+.post-card:hover {
+    background: #f7f9f9;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.post-time {
+    color: #657786;
+    font-size: 13px;
+}
+
+.post-content {
+    font-size: 15px;
+    color: #0f1419;
+}

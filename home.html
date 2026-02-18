@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Samaze Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="CSS/home.css">
+
+    <!-- JS -->
+    <script src="JS/home.js" defer></script>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+        <h2 class="logo">
+            <span style="color:#1da1f2;">S</span>AMAZE
+        </h2>
+
+        <ul class="menu">
+            <li id="sidebar-home">🏠 Home</li>
+            <li id="sidebar-search">🔍 Search</li>
+            <li id="sidebar-trending">🔥 Trending</li>
+            <li id="sidebar-notifications">🔔 Notifications</li>
+            <li id="sidebar-bookmarks">📌 Bookmarks</li>
+            <li id="sidebar-profile">👤 Profile</li>
+            <li id="sidebar-settings">⚙ Settings</li>
+            <li id="logout">🚪 Logout</li>
+        </ul>
+        
+        <button id="sidebar-post" type="button" class="sidebar-post-btn">
+            Post
+        </button>
+
+    </div>
+
+    <!-- MIDDLE FEED -->
+    <div class="feed" id="mainContent">
+        <!-- Dynamic pages load here -->
+    </div>
+
+</div>
+
+<!-- Post Modal -->
+<div id="postModal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3>Create Post</h3>
+            <span class="close-btn" onclick="closePostModal()">×</span>
+        </div>
+
+        <form id="postForm">
+
+            <input type="text" placeholder="Blog Title" required class="input-field">
+
+            <textarea id="blogContent"
+                placeholder="Write your blog here..."
+                maxlength="1000"
+                class="textarea-field"
+                required></textarea>
+
+            <div class="word-count">
+                <span id="wordCounter">0</span> / 1000 words
+            </div>
+
+            <input type="file" accept="image/*" class="file-input">
+
+            <button type="submit" class="post-btn">Post</button>
+
+        </form>
+
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
