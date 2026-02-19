@@ -1,23 +1,25 @@
-// =========================
-// GLOBAL LOAD PAGE FUNCTION
-// =========================
-function loadPage(path) {
-    const mainContent = document.getElementById("mainContent");
-
-    fetch(path)
-        .then(res => res.text())
-        .then(data => {
-            mainContent.innerHTML = data;
-        })
-        .catch(err => console.error("Error loading page:", err));
-}
+// =====================================
+// AUTH CHECK (Protect Page)
+// =====================================
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        await account.get();
+        initializeHome();
+    } catch (error) {
+        window.location.href = "login.html";
+    }
+});
 
 
-// =========================
-// DOM READY
-// =========================
-document.addEventListener("DOMContentLoaded", function () {
 
+// =====================================
+// INITIALIZE HOME
+// =====================================
+function initializeHome() {
+
+    // =========================
+    // Sidebar Page Loader
+    // =========================
     const pages = {
         "sidebar-home": "Pages/home-content.html",
         "sidebar-search": "Pages/search.html",
@@ -37,17 +39,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // =========================
     // Logout
+    // =========================
     const logoutBtn = document.getElementById("logout");
+
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            if (confirm("Do you really want to log out?")) {
+        logoutBtn.addEventListener("click", async function () {
+            const confirmLogout = confirm("Do you really want to log out?");
+            if (!confirmLogout) return;
+
+            try {
+                await account.deleteSession("current");
                 window.location.href = "login.html";
+            } catch (error) {
+                alert("Logout failed");
+                console.error(error);
             }
         });
     }
 
+    // =========================
     // Post Modal
+    // =========================
     const postBtn = document.getElementById("sidebar-post");
     const modal = document.getElementById("postModal");
 
@@ -58,29 +72,49 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Auto load home
+    // =========================
+    // Auto Load Home Page
+    // =========================
     loadPage("Pages/home-content.html");
-});
-
-
-// =========================
-// CLOSE MODAL
-// =========================
-function closePostModal() {
-    document.getElementById("postModal").style.display = "none";
 }
 
 
-// =========================
-// POST CLICK HANDLER (DELEGATION)
-// =========================
-document.addEventListener("click", function (e) {
+// =====================================
+// LOAD PAGE FUNCTION
+// =====================================
+function loadPage(path) {
+    const mainContent = document.getElementById("mainContent");
 
+    if (!mainContent) return;
+
+    fetch(path)
+        .then(res => res.text())
+        .then(data => {
+            mainContent.innerHTML = data;
+        })
+        .catch(err => console.error("Error loading page:", err));
+}
+
+
+// =====================================
+// CLOSE MODAL
+// =====================================
+function closePostModal() {
+    const modal = document.getElementById("postModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+// =====================================
+// POST CLICK HANDLER (Delegation)
+// =====================================
+document.addEventListener("click", function (e) {
     const post = e.target.closest(".post");
 
     if (post) {
         const postId = post.getAttribute("data-post-id");
-
         if (postId) {
             openPost(postId);
         }
@@ -88,61 +122,54 @@ document.addEventListener("click", function (e) {
 });
 
 
-// =========================
+// =====================================
 // OPEN SINGLE POST
-// =========================
+// =====================================
 function openPost(postId) {
-
     fetch("Pages/post-detail.html")
         .then(res => res.text())
         .then(data => {
-            document.getElementById("mainContent").innerHTML = data;
-            loadPostData(postId);
+            const mainContent = document.getElementById("mainContent");
+            if (!mainContent) return;
+
+            mainContent.innerHTML = data;
+
+            setTimeout(() => {
+                loadPostData(postId);
+            }, 50);
         })
         .catch(err => console.error("Error loading post:", err));
 }
 
 
-// =========================
+// =====================================
 // LOAD POST DATA
-// =========================
+// =====================================
 function loadPostData(postId) {
-
     const postContent = document.getElementById("postContent");
-
     if (!postContent) return;
 
-    if (postId === "1") {
-        postContent.innerText = "Just finished redesigning my portfolio website!";
-    }
+    const posts = {
+        "1": "Just finished redesigning my portfolio website!",
+        "2": "Exploring the beautiful mountains this weekend.",
+        "3": "Trending design tools you must try in 2026!"
+    };
 
-    if (postId === "2") {
-        postContent.innerText = "Exploring the beautiful mountains this weekend.";
-    }
-}
-if (postId === "3") {
-    postContent.innerText = "Trending design tools you must try in 2026!";
+    postContent.innerText = posts[postId] || "Post content not found.";
 }
 
+const client = new Appwrite.Client()
+  .setEndpoint("https://cloud.appwrite.io/v1")
+  .setProject("698d893400107bdbaf22");
 
-// post ko open karne ki liye 
+const account = new Appwrite.Account(client);
 
-// document.addEventListener("DOMContentLoaded", function () {
+async function checkUser() {
+  try {
+    const user = await account.get();
+    console.log("Logged in user:", user);
+  } catch (error) {
+    window.location.href = "login.html";
+  }
+}
 
-//     const posts = document.querySelectorAll(".post");
-
-//     posts.forEach(post => {
-//         post.addEventListener("click", function (e) {
-
-//             // Prevent open if clicking action buttons
-//             if (e.target.closest(".post-actions")) {
-//                 e.stopPropagation();
-//                 return;
-//             }
-
-//             const postId = post.dataset.postId;
-//             window.location.href = "post-detail.html?id=" + postId;
-//         });
-//     });
-
-// });

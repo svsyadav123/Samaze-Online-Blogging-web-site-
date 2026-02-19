@@ -9,14 +9,17 @@
     <link rel="stylesheet" href="CSS/home.css">
 
     <!-- JS -->
-    <script src="JS/home.js" defer></script>
 </head>
 <body>
 
 <div class="layout">
 
     <!-- LEFT SIDEBAR -->
+
+
+    
     <div class="sidebar">
+
         <h2 class="logo">
             <span style="color:#1da1f2;">S</span>AMAZE
         </h2>
@@ -29,7 +32,8 @@
             <li id="sidebar-bookmarks">📌 Bookmarks</li>
             <li id="sidebar-profile">👤 Profile</li>
             <li id="sidebar-settings">⚙ Settings</li>
-            <li id="logout">🚪 Logout</li>
+            <button id="logout">Logout</button>
+
         </ul>
         
         <button id="sidebar-post" type="button" class="sidebar-post-btn">
@@ -78,6 +82,14 @@
 </div>
 
 
+<!-- Appwrite CDN -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+
+<!-- Appwrite Config File -->
+<script src="JS/appwrite.js"></script>
+
+<!-- Home JS -->
+<script src="JS/home.js"></script>
 
 
 </body>

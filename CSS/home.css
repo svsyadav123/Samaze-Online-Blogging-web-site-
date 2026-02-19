@@ -317,3 +317,65 @@ body {
 .post-btn:hover {
     background: #0d8ddb;
 }
+
+/* ============================= */
+/* POINTER CURSOR (Clickable)   */
+/* ============================= */
+
+/* All clickable posts */
+.post {
+    cursor: pointer;
+}
+
+/* Sidebar menu items */
+.menu li {
+    cursor: pointer;
+}
+
+/* Buttons */
+button,
+.sidebar-post-btn,
+.post-btn {
+    cursor: pointer;
+}
+
+/* Notification items */
+.notification-item {
+    cursor: pointer;
+}
+
+/* Close button (×) */
+.close-btn {
+    cursor: pointer;
+}
+
+
+/* ============================= */
+/* TEXT CURSOR (Typing Fields)  */
+/* ============================= */
+
+input[type="text"],
+input[type="file"],
+textarea,
+.input-field,
+.textarea-field {
+    cursor: text;
+}/* ============================= */
+/* GLOBAL CLICKABLE CURSOR FIX  */
+/* ============================= */
+
+.menu li,
+.post,
+.notification-item,
+button,
+.sidebar-post-btn,
+.close-btn {
+    cursor: pointer !important;
+}
+
+/* Text typing fields */
+input,
+textarea {
+    cursor: text !important;
+}
+

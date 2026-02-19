@@ -99,3 +99,43 @@ body {
 .post-card:hover {
     background: #f7f9f9;
 }
+/* ============================= */
+/* CLICKABLE CURSOR FOR UI      */
+/* ============================= */
+
+/* Sidebar items */
+.menu li {
+    cursor: pointer;
+}
+
+/* Posts */
+.post {
+    cursor: pointer;
+}
+
+/* Notification items */
+.notification-item {
+    cursor: pointer;
+}
+
+/* Buttons */
+button,
+.sidebar-post-btn,
+.post-btn {
+    cursor: pointer;
+}
+
+/* Close button */
+.close-btn {
+    cursor: pointer;
+}
+
+
+/* ============================= */
+/* TEXT INPUT CURSOR            */
+/* ============================= */
+
+input,
+textarea {
+    cursor: text;
+}
