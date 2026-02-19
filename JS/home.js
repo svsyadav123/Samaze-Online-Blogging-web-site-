@@ -1,25 +1,18 @@
-// =====================================
-// AUTH CHECK (Protect Page)
-// =====================================
-document.addEventListener("DOMContentLoaded", async function () {
-    try {
-        await account.get();
-        initializeHome();
-    } catch (error) {
-        window.location.href = "login.html";
-    }
-});
+// =========================
+// HOME.JS - CLEAN VERSION
+// =========================
 
+// Wait for DOM to load
+document.addEventListener("DOMContentLoaded", function () {
 
+    const mainContent = document.getElementById("mainContent");
+    const logoutBtn = document.getElementById("logout");
+    const postBtn = document.getElementById("sidebar-post");
+    const modal = document.getElementById("postModal");
 
-// =====================================
-// INITIALIZE HOME
-// =====================================
-function initializeHome() {
-
-    // =========================
-    // Sidebar Page Loader
-    // =========================
+    // -------------------------
+    // SIDEBAR PAGE MAPPING
+    // -------------------------
     const pages = {
         "sidebar-home": "Pages/home-content.html",
         "sidebar-search": "Pages/search.html",
@@ -30,6 +23,21 @@ function initializeHome() {
         "sidebar-settings": "Pages/settings.html"
     };
 
+    // -------------------------
+    // LOAD PAGE FUNCTION
+    // -------------------------
+    function loadPage(path) {
+        fetch(path)
+            .then(res => res.text())
+            .then(data => {
+                mainContent.innerHTML = data;
+            })
+            .catch(err => console.error("Error loading page:", err));
+    }
+
+    // -------------------------
+    // ADD CLICK LISTENERS TO SIDEBAR
+    // -------------------------
     Object.keys(pages).forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
@@ -39,32 +47,20 @@ function initializeHome() {
         }
     });
 
-    // =========================
-    // Logout
-    // =========================
-    const logoutBtn = document.getElementById("logout");
-
+    // -------------------------
+    // LOGOUT BUTTON
+    // -------------------------
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", async function () {
-            const confirmLogout = confirm("Do you really want to log out?");
-            if (!confirmLogout) return;
-
-            try {
-                await account.deleteSession("current");
+        logoutBtn.addEventListener("click", function () {
+            if (confirm("Do you really want to log out?")) {
                 window.location.href = "login.html";
-            } catch (error) {
-                alert("Logout failed");
-                console.error(error);
             }
         });
     }
 
-    // =========================
-    // Post Modal
-    // =========================
-    const postBtn = document.getElementById("sidebar-post");
-    const modal = document.getElementById("postModal");
-
+    // -------------------------
+    // SIDEBAR POST BUTTON (OPEN MODAL)
+    // -------------------------
     if (postBtn && modal) {
         postBtn.addEventListener("click", function (e) {
             e.preventDefault();
@@ -72,68 +68,54 @@ function initializeHome() {
         });
     }
 
-    // =========================
-    // Auto Load Home Page
-    // =========================
-    loadPage("Pages/home-content.html");
-}
+    // -------------------------
+    // AUTO LOAD HOME PAGE
+    // -------------------------
+    loadPage(pages["sidebar-home"]);
 
+    // -------------------------
+    // POST CLICK HANDLER (DELEGATION)
+    // -------------------------
+    document.addEventListener("click", function (e) {
+        const post = e.target.closest(".post");
+        if (post && post.classList.contains("clickable-post")) {
+            // Ignore clicks on text to allow selection
+            if (e.target.classList.contains("post-text")) return;
 
-// =====================================
-// LOAD PAGE FUNCTION
-// =====================================
-function loadPage(path) {
-    const mainContent = document.getElementById("mainContent");
-
-    if (!mainContent) return;
-
-    fetch(path)
-        .then(res => res.text())
-        .then(data => {
-            mainContent.innerHTML = data;
-        })
-        .catch(err => console.error("Error loading page:", err));
-}
-
-
-// =====================================
-// CLOSE MODAL
-// =====================================
-function closePostModal() {
-    const modal = document.getElementById("postModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
-}
-
-
-// =====================================
-// POST CLICK HANDLER (Delegation)
-// =====================================
-document.addEventListener("click", function (e) {
-    const post = e.target.closest(".post");
-
-    if (post) {
-        const postId = post.getAttribute("data-post-id");
-        if (postId) {
-            openPost(postId);
+            const postId = post.dataset.postId;
+            if (postId) openPost(postId);
         }
+    });
+
+    // -------------------------
+    // CLOSE MODAL
+    // -------------------------
+    const closeModalBtn = document.querySelector(".close-btn");
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
     }
+
+    // Close modal when clicking outside content
+    window.addEventListener("click", e => {
+        if (e.target === modal) modal.style.display = "none";
+    });
+
 });
 
-
-// =====================================
+// ==========================
 // OPEN SINGLE POST
-// =====================================
+// ==========================
 function openPost(postId) {
+    const mainContent = document.getElementById("mainContent");
+
     fetch("Pages/post-detail.html")
         .then(res => res.text())
         .then(data => {
-            const mainContent = document.getElementById("mainContent");
-            if (!mainContent) return;
-
             mainContent.innerHTML = data;
 
+            // Wait a bit for HTML to render
             setTimeout(() => {
                 loadPostData(postId);
             }, 50);
@@ -141,35 +123,25 @@ function openPost(postId) {
         .catch(err => console.error("Error loading post:", err));
 }
 
-
-// =====================================
+// ==========================
 // LOAD POST DATA
-// =====================================
+// ==========================
 function loadPostData(postId) {
     const postContent = document.getElementById("postContent");
     if (!postContent) return;
 
-    const posts = {
-        "1": "Just finished redesigning my portfolio website!",
-        "2": "Exploring the beautiful mountains this weekend.",
-        "3": "Trending design tools you must try in 2026!"
-    };
-
-    postContent.innerText = posts[postId] || "Post content not found.";
+    switch (postId) {
+        case "1":
+            postContent.innerText = "Just finished redesigning my portfolio website!";
+            break;
+        case "2":
+            postContent.innerText = "Exploring the beautiful mountains this weekend.";
+            break;
+        case "3":
+            postContent.innerText = "Trending design tools you must try in 2026!";
+            break;
+        default:
+            postContent.innerText = "Post content not found.";
+            break;
+    }
 }
-
-const client = new Appwrite.Client()
-  .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject("698d893400107bdbaf22");
-
-const account = new Appwrite.Account(client);
-
-async function checkUser() {
-  try {
-    const user = await account.get();
-    console.log("Logged in user:", user);
-  } catch (error) {
-    window.location.href = "login.html";
-  }
-}
-
