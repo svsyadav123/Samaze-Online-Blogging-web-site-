@@ -1,87 +1,47 @@
-document.addEventListener("DOMContentLoaded", function () {
+// document.addEventListener("DOMContentLoaded", () => {
+//     import client from './src/appwrite.js';
+//     import { Account } from 'appwrite';
 
-    // ==============================
-    // FORM TOGGLE (Login ↔ Signup)
-    // ==============================
+//     const account = new Account(client);
+//     const authStatus = document.getElementById("authStatus");
 
-    const loginForm = document.getElementById("loginForm");
-    const signupForm = document.getElementById("signupForm");
+//     const loginForm = document.getElementById("loginForm");
+//     const signupForm = document.getElementById("signupForm");
+//     const showSignup = document.getElementById("showSignup");
+//     const showLogin = document.getElementById("showLogin");
 
-    const showSignup = document.getElementById("showSignup");
-    const showLogin = document.getElementById("showLogin");
+//     // Toggle forms
+//     showSignup.addEventListener("click", () => {
+//         loginForm.classList.remove("active");
+//         signupForm.classList.add("active");
+//         authStatus.innerText = "";
+//     });
 
-    if (showSignup) {
-        showSignup.addEventListener("click", function () {
-            loginForm.classList.remove("active");
-            signupForm.classList.add("active");
-        });
-    }
+//     showLogin.addEventListener("click", () => {
+//         signupForm.classList.remove("active");
+//         loginForm.classList.add("active");
+//         authStatus.innerText = "";
+//     });
 
-    if (showLogin) {
-        showLogin.addEventListener("click", function () {
-            signupForm.classList.remove("active");
-            loginForm.classList.add("active");
-        });
-    }
-
-
-    // ==============================
-    // LOGIN
-    // ==============================
-
-    if (loginForm) {
-       loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
-
-  try {
-    await account.createEmailSession(email, password);
-
-    alert("Login Successful ✅");
-    window.location.href = "home.html";
-
-  } catch (error) {
-    alert(error.message);
-  }
-});
-
-    }
+//     // Signup & Login logic here...
+// });
 
 
-    // ==============================
-    // SIGNUP
-    // ==============================
+//     // SIGNUP
+//     signupForm.addEventListener("submit", async (e) => {
+//         e.preventDefault();
 
-    if (signupForm) {
-        signupForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+//         const name = document.getElementById("signupName").value;
+//         const email = document.getElementById("signupEmail").value;
+//         const password = document.getElementById("signupPassword").value;
 
-  const name = document.getElementById("signup-name").value;
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
-
-  try {
-    // Create Account
-    await account.create(
-      ID.unique(),
-      email,
-      password,
-      name
-    );
-
-    // Auto Login
-    await account.createEmailSession(email, password);
-
-    alert("Signup Successful 🚀");
-    window.location.href = "home.html";
-
-  } catch (error) {
-    alert(error.message);
-  }
-});
-
-    }
-
-});
+//         try {
+//             await account.create(ID.unique(), email, password, name);
+//             await account.createEmailSession(email, password);
+//             alert("Signup Successful 🚀");
+//             window.location.href = "home.html";
+//         } catch (error) {
+//             alert(error.message);
+//         }
+//     });
+// // 

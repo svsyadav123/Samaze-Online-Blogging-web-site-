@@ -9,21 +9,21 @@
     <link rel="stylesheet" href="CSS/home.css">
 
     <!-- JS -->
-    <script src="JS/home.js" defer></script>
+    <script type="module" src="JS/home.js" defer></script>
 </head>
 <body>
 
 <div class="layout">
 
     <!-- LEFT SIDEBAR -->
-
-
-    
     <div class="sidebar">
 
         <h2 class="logo">
             <span style="color:#1da1f2;">S</span>AMAZE
         </h2>
+
+        <!-- Logged-in user display -->
+        <div id="username" style="text-align:center; margin-bottom:15px; font-weight:bold; color:#4e73df;"></div>
 
         <ul class="menu">
             <li id="sidebar-home">🏠 Home</li>
@@ -59,30 +59,17 @@
         </div>
 
         <form id="postForm">
-
             <input type="text" placeholder="Blog Title" required class="input-field">
-
-            <textarea id="blogContent"
-                placeholder="Write your blog here..."
-                maxlength="1000"
-                class="textarea-field"
-                required></textarea>
-
+            <textarea id="blogContent" placeholder="Write your blog here..." maxlength="1000" class="textarea-field" required></textarea>
             <div class="word-count">
                 <span id="wordCounter">0</span> / 1000 words
             </div>
-
             <input type="file" accept="image/*" class="file-input">
-
             <button type="submit" class="post-btn">Post</button>
-
         </form>
 
     </div>
 </div>
-
-
-
 
 </body>
 </html>

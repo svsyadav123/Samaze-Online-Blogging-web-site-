@@ -1,30 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Auth Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/login.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samaze Auth Demo</title>
+<style>
+/* ============================= */
+/* GLOBAL RESET */
+/* ============================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
+/* ============================= */
+/* BODY LAYOUT */
+/* ============================= */
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;   /* Right side */
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding-right: 50px;         /* optional spacing from right edge */
+}
+
+/* ============================= */
+/* CONTAINER */
+/* ============================= */
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+/* ============================= */
+/* FORM BOXES */
+/* ============================= */
+.form-box {
+    display: flex;
+    width: 200%;
+    transition: transform 0.5s ease;
+}
+
+/* Individual forms */
+.form {
+    width: 50%;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================= */
+/* HEADINGS */
+/* ============================= */
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* ============================= */
+/* INPUT FIELDS */
+/* ============================= */
+input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102,126,234,0.5);
+}
+
+/* ============================= */
+/* BUTTON */
+/* ============================= */
+button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+/* ============================= */
+/* TEXT LINKS */
+/* ============================= */
+p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+span {
+    color: #667eea;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ============================= */
+/* STATUS MESSAGE */
+/* ============================= */
+#authStatus {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+@media (max-width: 480px) {
+    .container {
+        max-width: 90%;
+    }
+}
+</style>
 </head>
 <body>
 
 <div class="container">
-    <div class="form-box">
+    <div class="form-box" id="formBox">
 
         <!-- Login Form -->
-        <form id="loginForm" class="form active">
+        <form id="loginForm" class="form">
             <h2>Login</h2>
-
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
             <button type="submit">Login</button>
-
-            <p>Don't have an account?
-                
-                <span id="showSignup">Sign Up</span>
-            </p>
+            <p>Don't have an account? <span id="showSignup">Sign Up</span></p>
         </form>
 
         <!-- Signup Form -->
@@ -33,25 +158,83 @@
             <input type="text" id="signupName" placeholder="Full Name" required>
             <input type="email" id="signupEmail" placeholder="Email" required>
             <input type="password" id="signupPassword" placeholder="Password" required>
-
             <button type="submit">Sign Up</button>
-
-            <p>Already have an account?
-                <span id="showLogin">Login</span>
-            </p>
+            <p>Already have an account? <span id="showLogin">Login</span></p>
         </form>
 
     </div>
+    <p id="authStatus"></p>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+    const formBox = document.getElementById("formBox");
+    const showSignup = document.getElementById("showSignup");
+    const showLogin = document.getElementById("showLogin");
+    const authStatus = document.getElementById("authStatus");
 
-<script src="JS/appwrite.js"></script>
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
 
-<script src="JS/login.js"></script>
+    // Fake database
+    const fakeDB = [];
 
+    // Toggle forms with smooth slide
+    showSignup.addEventListener("click", () => {
+        formBox.style.transform = "translateX(-50%)";
+        authStatus.innerText = "";
+    });
 
+    showLogin.addEventListener("click", () => {
+        formBox.style.transform = "translateX(0%)";
+        authStatus.innerText = "";
+    });
+
+    // SIGNUP
+    signupForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("signupName").value.trim();
+        const email = document.getElementById("signupEmail").value.trim();
+        const password = document.getElementById("signupPassword").value.trim();
+
+        if(!name || !email || !password){
+            authStatus.innerText = "❌ Please fill all fields!";
+            return;
+        }
+
+        // Check if user already exists
+        if(fakeDB.find(user => user.email === email)){
+            authStatus.innerText = "❌ Email already registered!";
+            return;
+        }
+
+        // Add user to fake database
+        fakeDB.push({name, email, password});
+        authStatus.innerText = "✅ Sign up successful! Please login.";
+
+        signupForm.reset();
+        formBox.style.transform = "translateX(0%)"; // Switch to login
+    });
+
+    // LOGIN
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        const user = fakeDB.find(u => u.email === email && u.password === password);
+
+        if(user){
+            authStatus.innerText = `✅ Login successful! Welcome, ${user.name}`;
+            loginForm.reset();
+        } else {
+            authStatus.innerText = "❌ Invalid email or password!";
+        }
+    });
+
+});
+</script>
 
 </body>
 </html>

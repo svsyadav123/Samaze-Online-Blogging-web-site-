@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* ============================= */
@@ -14,9 +14,10 @@
 body {
     height: 100vh;
     display: flex;
-    justify-content: flex-end;   /* RIGHT SIDE */
+    justify-content: flex-end;   /* Right side */
     align-items: center;
-    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding-right: 50px;         /* optional spacing from right edge */
 }
 
 /* ============================= */
@@ -25,30 +26,28 @@ body {
 .container {
     width: 100%;
     max-width: 400px;
-    margin-right: 80px;
-    padding: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
 }
 
 /* ============================= */
-/* FORM BOX */
+/* FORM BOXES */
 /* ============================= */
 .form-box {
-    background: #ffffff;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* ============================= */
-/* FORM VISIBILITY */
-/* ============================= */
-.form {
-    display: none;
-    flex-direction: column;
-}
-
-.form.active {
     display: flex;
+    width: 200%;
+    transition: transform 0.5s ease;
+}
+
+/* Individual forms */
+.form {
+    width: 50%;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ============================= */
@@ -57,6 +56,7 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 25px;
+    color: #333;
 }
 
 /* ============================= */
@@ -64,16 +64,17 @@ h2 {
 /* ============================= */
 input {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 15px;
 }
 
 input:focus {
     outline: none;
-    border-color: #4e73df;
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102,126,234,0.5);
 }
 
 /* ============================= */
@@ -81,18 +82,18 @@ input:focus {
 /* ============================= */
 button {
     width: 100%;
-    padding: 12px;
-    background: #4e73df;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px;
     transition: 0.3s;
 }
 
 button:hover {
-    background: #2e59d9;
+    background: linear-gradient(135deg, #764ba2, #667eea);
 }
 
 /* ============================= */
@@ -100,33 +101,31 @@ button:hover {
 /* ============================= */
 p {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 10px;
     font-size: 14px;
+    color: #555;
 }
 
 span {
-    color: #4e73df;
+    color: #667eea;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-span:hover {
-    text-decoration: underline;
+/* ============================= */
+/* STATUS MESSAGE */
+/* ============================= */
+#authStatus {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 500;
 }
 
 /* ============================= */
 /* RESPONSIVE */
 /* ============================= */
 @media (max-width: 480px) {
-    body {
-        justify-content: center;
-    }
-
     .container {
-        margin-right: 0;
-    }
-
-    .form-box {
-        padding: 30px 20px;
+        max-width: 90%;
     }
 }
